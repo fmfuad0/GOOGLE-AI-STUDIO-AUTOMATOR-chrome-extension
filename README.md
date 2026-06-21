@@ -6,8 +6,8 @@ Whether you need to extract specific tables from hundreds of PDFs, process thous
 
 ---
 
-![Alt text description](./screenshots\main.png)
-![Alt text description](./screenshots\outputs.png)
+![Alt text description](https://github.com/fmfuad0/GOOGLE-AI-STUDIO-AUTOMATOR-chrome-extension/blob/main/screenshots/main.png)
+![Alt text description](https://github.com/fmfuad0/GOOGLE-AI-STUDIO-AUTOMATOR-chrome-extension/blob/main/screenshots/outputs.png)
 
 ## 🚀 Key Features
 

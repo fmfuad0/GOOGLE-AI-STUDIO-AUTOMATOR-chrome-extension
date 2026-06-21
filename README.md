@@ -6,6 +6,9 @@ Whether you need to extract specific tables from hundreds of PDFs, process thous
 
 ---
 
+![Alt text description](./screenshots\main.png)
+![Alt text description](./screenshots\outputs.png)
+
 ## 🚀 Key Features
 
 - **Multi-Format Support:** Natively process `.xlsx`, `.xls`, `.csv`, and `.pdf` files.
@@ -22,14 +25,13 @@ Whether you need to extract specific tables from hundreds of PDFs, process thous
 
 ---
 
-## 💡 Common Use Cases
-
-- **Bulk Data Transformation:** Reformatting large CSV datasets into specific JSON/XML schemas.
-- **Mass Document OCR & Extraction:** Extracting structured data (like tables of contents or invoice details) from a folder of PDF files.
-- **Content Generation:** Generating customized descriptions, emails, or reports row-by-row from an Excel spreadsheet.
-- **Code Translation:** Converting code snippets in an Excel file from one language to another in bulk.
-
+# EXCLUSIVE TIP : GENERATE AND VIEW ALL OUTPUT FORMAT
+  1. JUST OPEN THE EXTENTION, SELECT `DEMO - ALL CODE BLOCK FORMAT` PROMPT PROFILE, `TOGGLE AND ENABLE APPEND PROMPT OPTION` THEN CLICK `RUN AUTOMATION` BUTTON. 
+  - IT WILL GENERATE AI RESPONSE HAVING EVERY SUPPORTED FORMAT IN THE EXTENSION. ONCE COMPLETED, SCROLL DOWN TO  `VIEW OUTPUT` SECTION TO EXPLORE THE OUTPUT.
+  
 ---
+
+
 
 ## 📖 Quick Demo OCR Operation
 
@@ -41,6 +43,15 @@ Follow these instructions to perform a demo Table of Content OCR operation:
 4. **Select Mode & Add File:** Select **PDF Mode**. Drag and drop the `SAMPLE.pdf` file (located in the `./SAMPLE FILE` folder) into the input area.
 5. **Run the Automation:** Click the "Run" button and let the automation widget handle the rest!
 6. **View Output:** Once finished, click the `View Output` button at the bottom of the extension to open the built-in viewer and export your data.
+
+---
+
+## 💡 Common Use Cases
+
+- **Bulk Data Transformation:** Reformatting large CSV datasets into specific JSON/XML schemas.
+- **Mass Document OCR & Extraction:** Extracting structured data (like tables of contents or invoice details) from a folder of PDF files.
+- **Content Generation:** Generating customized descriptions, emails, or reports row-by-row from an Excel spreadsheet.
+- **Code Translation:** Converting code snippets in an Excel file from one language to another in bulk.
 
 ---
 

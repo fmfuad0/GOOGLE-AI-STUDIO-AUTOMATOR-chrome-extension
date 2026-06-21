@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Studio Automator</title>
+  <meta name="description" content="Automate bulk spreadsheet processing with Google AI Studio. Upload Excel/CSV, extract &amp; transform data with AI, download results.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app">
+
+    <!-- ══ HEADER ══ -->
+    <div class="header">
+      <div class="header-left">
+        <div class="logo-wrap">
+          <div class="gemini-icon" aria-hidden="true">✦</div>
+        </div>
+        <div class="header-titles">
+          <span class="title">AI Studio Automator</span>
+          <span class="subtitle">Powered by Google AI Studio</span>
+        </div>
+      </div>
+      <button id="btn-sidepanel" class="btn-icon" title="Open Side Panel">⊞</button>
+    </div>
+
+    <!-- ══ STATUS BAR ══ -->
+    <div class="status-bar">
+      <span class="status-dot dot-idle" id="status-dot"></span>
+      <span id="status-text">Idle — Ready</span>
+      <span class="status-counts" id="status-counts"></span>
+    </div>
+    <div class="progress-wrap" id="progress-wrap" style="display:none">
+      <div class="progress-bar" id="progress-bar" style="width:0%"></div>
+    </div>
+
+    <!-- ══ CARD 1: PROMPT PROFILE ══ -->
+    <div class="section-card">
+      <div class="section-title">⚙️ Prompt Profile</div>
+
+      <!-- Profile select + buttons -->
+      <div class="profile-row">
+        <select id="profile-select" title="Select prompt profile"></select>
+        <button id="btn-add-profile"    class="btn-secondary btn-sm" title="Add new profile">+ New</button>
+        <button id="btn-edit-profile"   class="btn-secondary btn-sm" title="Edit profile prompt">✏️</button>
+        <button id="btn-delete-profile" class="btn-danger    btn-sm" title="Delete profile">🗑</button>
+      </div>
+
+      <!-- System Prompt toggle — inline row -->
+      <div class="sys-prompt-row">
+        <label class="toggle-switch-label" for="chk-system-prompt">
+          <div class="toggle-switch">
+            <input type="checkbox" id="chk-system-prompt">
+            <span class="toggle-slider"></span>
+          </div>
+          <span class="toggle-title-inline">Prepend system prompt before input data</span>
+        </label>
+      </div>
+
+      <!-- Delay between batches -->
+      <div class="delay-row">
+        <span class="delay-label">⏱ Delay between batches</span>
+        <div class="delay-input-wrap">
+          <button class="num-btn" id="delay-dec" aria-label="Decrease delay">−</button>
+          <input type="number" id="batch-delay-seconds" min="0" max="300" value="0"
+            aria-label="Delay in seconds">
+          <button class="num-btn" id="delay-inc" aria-label="Increase delay">+</button>
+          <span class="delay-unit">sec</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ PROMPT PREVIEW (accordion) ══ -->
+    <div class="section-card accordion-card" id="prompt-accordion">
+      <div class="section-title accordion-toggle" id="prompt-toggle" role="button" tabindex="0" aria-expanded="false">
+        <span>📝 Prompt Preview</span>
+        <span class="accordion-arrow" id="accordion-arrow">▼</span>
+      </div>
+      <div class="accordion-body" id="prompt-body" style="display:none">
+        <textarea id="prompt-preview" rows="6" class="prompt-textarea"
+          placeholder="Select a profile to view its prompt..."></textarea>
+        <div class="prompt-actions">
+          <span class="prompt-hint">Use <code>[N]</code> as placeholder for file count in the batch.</span>
+          <button id="btn-save-prompt" class="btn-secondary btn-sm">💾 Save</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ CARD 2: INPUT MODE ══ -->
+    <div class="section-card" id="input-mode-card">
+      <div class="section-title-row">
+        <span class="section-title-text">📥 Input</span>
+        <!-- Segmented control replaces bulky radio cards -->
+        <div class="seg-control" role="radiogroup" aria-label="Input source">
+          <label class="seg-btn" id="radio-card-spreadsheet">
+            <input type="radio" name="input-mode" id="radio-spreadsheet" value="spreadsheet" checked>
+            <span>📊 Sheet</span>
+          </label>
+          <label class="seg-btn" id="radio-card-pdf">
+            <input type="radio" name="input-mode" id="radio-pdf" value="pdf">
+            <span>📄 PDF</span>
+          </label>
+          <label class="seg-btn" id="radio-card-raw">
+            <input type="radio" name="input-mode" id="radio-raw" value="raw">
+            <span>📝 Raw</span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ RAW INPUT FIELD (shown only in raw mode) ══ -->
+    <div class="section-card" id="raw-input-section" style="display:none">
+      <textarea id="raw-input-text" class="raw-input-textarea"
+        rows="5"
+        placeholder="Paste or type your input data here. Sent as-is to AI Studio..."></textarea>
+      <div class="raw-input-hint">This entire text will be sent as one batch to AI Studio.</div>
+    </div>
+
+    <!-- ══ INPUT FILES ══ -->
+    <div class="section-card" id="file-input-section">
+      <div class="section-title">
+        <span>📂 Input Files</span>
+        <span class="badge" id="file-count-badge">0</span>
+      </div>
+
+      <div class="tabs">
+        <button class="tab-btn active" id="tab-files">📄 Individual Files</button>
+        <button class="tab-btn"        id="tab-folder">📁 Folder</button>
+      </div>
+
+      <div class="tab-content" id="content-files">
+        <div class="dropzone" id="dropzone-files" role="button" tabindex="0"
+          aria-label="Drop files here or click to browse">
+          <div class="dropzone-icon" id="dropzone-icon">📊</div>
+          <div class="dropzone-text" id="dropzone-text">Drop Excel / CSV files here</div>
+          <div class="dropzone-sub">or <span class="dropzone-link">click to browse</span></div>
+          <input type="file" id="file-input" accept=".xlsx,.xls,.csv" multiple
+            aria-label="Select files" style="display:none">
+        </div>
+      </div>
+
+      <div class="tab-content" id="content-folder" style="display:none;">
+        <div class="dropzone" id="dropzone-folder" role="button" tabindex="0" aria-label="Select a folder">
+          <div class="dropzone-icon">📁</div>
+          <div class="dropzone-text" id="dropzone-folder-text">Select a Folder</div>
+          <div class="dropzone-sub" id="dropzone-sub-folder">All contained spreadsheet files will be queued</div>
+          <input type="file" id="folder-input" webkitdirectory directory multiple accept=".xlsx,.xls,.csv" style="display:none">
+        </div>
+      </div>
+
+      <div class="file-list" id="file-list" aria-label="Uploaded files" role="list"></div>
+
+      <div class="file-list-actions" id="file-list-actions" style="display:none">
+        <button id="btn-clear-files" class="btn-danger btn-sm btn-full">🗑 Clear All Files</button>
+      </div>
+    </div>
+
+    <!-- ══ SPREADSHEET SETTINGS ══ -->
+    <div class="section-card" id="sheet-settings" style="display:none">
+      <div class="section-title">🗂️ Spreadsheet Settings</div>
+
+      <div class="field-row">
+        <div class="field-col">
+          <div class="field-label">Target Sheet</div>
+          <select id="excel-sheet-select" title="Select which sheet to process"
+            class="full-width-select" disabled>
+            <option value="">Upload a spreadsheet first...</option>
+          </select>
+          <span id="excel-total-rows" class="info-text"></span>
+        </div>
+      </div>
+
+      <div class="field-label" style="margin-top:10px;">Columns to Process</div>
+      <div class="column-selector" id="excel-column-selector">
+        <div class="empty-state-text">Upload a spreadsheet to select columns</div>
+      </div>
+
+      <div class="sheet-footer-row">
+        <div>
+          <label for="excel-rows-per-prompt" class="field-label">Rows per prompt</label>
+          <div class="number-input-wrap">
+            <button class="num-btn" id="row-dec" aria-label="Decrease">−</button>
+            <input type="number" id="excel-rows-per-prompt" min="1" max="500" value="50"
+              aria-label="Rows per prompt">
+            <button class="num-btn" id="row-inc" aria-label="Increase">+</button>
+          </div>
+        </div>
+        <label class="checkbox-label" style="cursor:pointer; align-self:flex-end; padding-bottom:4px;">
+          <input type="checkbox" id="excel-include-headers" checked>
+          <span>Include header row</span>
+        </label>
+      </div>
+    </div>
+
+    <!-- ══ PDF SETTINGS ══ -->
+    <div class="section-card" id="pdf-settings" style="display:none">
+      <div class="section-title">📄 PDF Settings</div>
+      <div class="sheet-footer-row">
+        <div>
+          <label for="pdf-files-per-prompt" class="field-label">Files per prompt</label>
+          <div class="number-input-wrap">
+            <button class="num-btn" id="pdf-dec" aria-label="Decrease">−</button>
+            <input type="number" id="pdf-files-per-prompt" min="1" max="100" value="1"
+              aria-label="Files per prompt">
+            <button class="num-btn" id="pdf-inc" aria-label="Increase">+</button>
+          </div>
+        </div>
+        <span class="info-text" style="align-self:flex-end; padding-bottom:4px;">PDFs per generation</span>
+      </div>
+    </div>
+
+    <!-- ══ AUTOMATION + OUTPUT (combined) ══ -->
+    <div class="section-card run-card">
+      <div class="section-title">🚀 Run</div>
+
+      <!-- Options row -->
+      <div class="run-options-row">
+        <label class="checkbox-label" style="cursor:pointer;">
+          <input type="checkbox" id="new-chat-per-batch">
+          <span>New Chat per batch</span>
+        </label>
+      </div>
+
+      <!-- Primary Run Button -->
+      <button id="btn-run" class="btn-run" aria-label="Run automation">
+        <span class="btn-run-icon">▶</span>
+        <span>Run Automation</span>
+      </button>
+
+      <!-- Control toolbar -->
+      <div class="ctrl-toolbar">
+        <button id="btn-pause"     class="btn-secondary" disabled aria-label="Pause">⏸ Pause</button>
+        <button id="btn-resume"    class="btn-secondary" disabled aria-label="Resume">▶️ Resume</button>
+        <button id="btn-stop"      class="btn-danger"    disabled aria-label="Stop">⏹ Stop</button>
+        <button id="btn-reset-all" class="btn-reset"     aria-label="Reset All">⚠️</button>
+      </div>
+    </div>
+
+    <!-- ══ OUTPUT ══ -->
+    <div class="section-card output-card">
+      <div class="section-title">📤 Output</div>
+      <div class="output-info" id="output-info">No extracted data yet.</div>
+
+      <div class="output-actions">
+        <div class="download-row">
+          <span class="output-label">Download:</span>
+          <button id="btn-download-txt"  class="btn-dl"            aria-label="Download TXT">⬇ TXT</button>
+          <button id="btn-download-csv"  class="btn-dl"            aria-label="Download CSV">⬇ CSV</button>
+          <button id="btn-download-xlsx" class="btn-dl btn-dl-accent" aria-label="Download Excel">⬇ Excel</button>
+        </div>
+        <button id="btn-view-output" class="btn-view">👁 View Output</button>
+      </div>
+    </div>
+
+    <!-- ══ FOOTER ══ -->
+    <div class="footer">
+      <span>v1.0.0</span>
+      <span>·</span>
+      <span>AI Studio Automator</span>
+    </div>
+
+  </div><!-- /.app -->
+
+  <script src="../lib/xlsx.full.min.js"></script>
+  <script type="module" src="app.js"></script>
+</body>
+</html>

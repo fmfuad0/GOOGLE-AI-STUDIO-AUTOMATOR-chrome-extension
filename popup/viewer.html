@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Studio — Output Viewer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="viewer.css">
+  <link rel="stylesheet" href="lib/atom-one-dark.min.css">
+  <script src="lib/highlight.min.js"></script>
+  <script src="lib/jszip.min.js"></script>
+  <script src="../lib/xlsx.full.min.js"></script>
+</head>
+<body>
+  <div class="viewer-app">
+
+    <!-- Header -->
+    <div class="viewer-header">
+      <div class="viewer-title">
+        <span class="viewer-icon">⚡</span>
+        <div>
+          <div class="viewer-name">Output Viewer</div>
+          <div class="viewer-sub">AI Studio Automator</div>
+        </div>
+      </div>
+      <div class="view-controls">
+        <button id="view-text"  class="view-btn active" title="Raw text">📄 Text</button>
+        <button id="view-md"    class="view-btn"         title="Markdown view">Ⓜ️ Markdown</button>
+        <button id="view-code"  class="view-btn"         title="Code view">💻 Code</button>
+        <button id="view-table" class="view-btn"         title="Table view">📊 Table</button>
+        <button id="view-json"  class="view-btn"         title="JSON view">{ } JSON</button>
+        <div class="view-divider"></div>
+        <button id="download-current" class="view-btn download-btn" title="Download current view">⬇️ Download</button>
+      </div>
+    </div>
+
+    <!-- Status bar -->
+    <div class="viewer-status" id="viewer-status">Loading data…</div>
+
+    <!-- Content area -->
+    <div class="viewer-content" id="viewer-content">
+      <pre  id="output-text"  class="view-pane active"></pre>
+      <div  id="output-md"    class="view-pane md-pane"    style="display:none;"></div>
+      <div  id="output-code"  class="view-pane code-pane"  style="display:none;"></div>
+      <div  id="output-table" class="view-pane table-pane"  style="display:none;"></div>
+      <pre  id="output-json"  class="view-pane json-pane"   style="display:none;"></pre>
+    </div>
+
+  </div>
+
+  <script type="module" src="viewer.js"></script>
+</body>
+</html>

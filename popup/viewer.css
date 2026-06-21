@@ -1,0 +1,280 @@
+/* ============================================================
+   AI Studio Automator — Output Viewer Styles
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+  --bg:        #0d0d12;
+  --bg2:       #13131a;
+  --bg3:       rgba(255,255,255,0.04);
+  --border:    rgba(255,255,255,0.09);
+  --accent:    #6366f1;
+  --accent2:   #8b5cf6;
+  --success:   #10b981;
+  --text:      #f0f0f6;
+  --text2:     #8b8ba8;
+  --text3:     #4a4a62;
+  --hover:     rgba(255,255,255,0.06);
+  --border-hover: rgba(255,255,255,0.16);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  width: 100%;
+  height: 100%;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 13px;
+  -webkit-font-smoothing: antialiased;
+  overflow: hidden;
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(99,102,241,0.4); border-radius: 99px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(99,102,241,0.65); }
+
+/* ── App shell ── */
+.viewer-app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+/* ══ HEADER ══ */
+.viewer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 20px;
+  background: linear-gradient(135deg, rgba(99,102,241,0.16), rgba(139,92,246,0.08));
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.viewer-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.viewer-icon {
+  font-size: 24px;
+  line-height: 1;
+}
+
+.viewer-name {
+  font-size: 15px;
+  font-weight: 700;
+  background: linear-gradient(135deg, #fff, rgba(255,255,255,0.8));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.viewer-sub {
+  font-size: 10px;
+  color: var(--text3);
+  letter-spacing: 0.05em;
+  margin-top: 1px;
+}
+
+/* ── View mode controls ── */
+.view-controls {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.view-btn {
+  padding: 6px 14px;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text2);
+  font-size: 12px;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+
+.view-btn:hover {
+  background: var(--hover);
+  color: var(--text);
+  border-color: var(--border-hover);
+}
+
+.view-btn.active {
+  background: rgba(99, 102, 241, 0.1);
+  color: #8b5cf6;
+  border-color: rgba(139, 92, 246, 0.4);
+}
+
+.view-divider {
+  width: 1px;
+  height: 22px;
+  background: var(--border);
+  margin: 0 2px;
+}
+
+.download-btn {
+  background: rgba(16, 185, 129, 0.08);
+  color: #10b981;
+  border-color: rgba(16, 185, 129, 0.3);
+}
+
+.download-btn:hover {
+  background: rgba(16, 185, 129, 0.18);
+  color: #059669;
+  border-color: rgba(16, 185, 129, 0.5);
+}
+
+/* ══ STATUS BAR ══ */
+.viewer-status {
+  padding: 5px 20px;
+  font-size: 11px;
+  color: var(--text3);
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+/* ══ CONTENT ══ */
+.viewer-content {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+}
+
+.view-pane {
+  position: absolute;
+  inset: 0;
+  overflow: auto;
+  padding: 20px;
+}
+
+.view-pane.active { display: block; }
+
+/* ── Text pane ── */
+#output-text {
+  white-space: pre-wrap;
+  font-family: 'Consolas', 'Fira Code', 'Monaco', monospace;
+  font-size: 12.5px;
+  line-height: 1.7;
+  color: #d4d4e8;
+}
+
+/* ── Markdown pane ── */
+.md-pane {
+  padding: 20px;
+  overflow-y: auto;
+}
+
+/* Markdown pane inherits code-block styles from hljs via viewer.js DOM creation */
+
+/* ── Code pane ── */
+.code-pane {
+  padding: 20px;
+  overflow-y: auto;
+}
+
+/* ── JSON pane ── */
+.json-pane {
+  white-space: pre-wrap;
+  font-family: 'Consolas', 'Fira Code', 'Monaco', monospace;
+  font-size: 12px;
+  line-height: 1.7;
+  color: #a5f3fc;
+}
+
+/* ── Table pane ── */
+.table-pane {
+  overflow: auto;
+  padding: 12px 20px 20px;
+}
+
+/* Per-file section in table view */
+.table-file-section {
+  margin-bottom: 28px;
+}
+
+.table-file-heading {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  padding: 12px 14px;
+  background: rgba(0,0,0,0.15);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.format-badge {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 4px;
+  letter-spacing: 0.05em;
+  margin-left: auto;
+}
+.format-json    { background: rgba(16, 185, 129, 0.15); color: #10b981; }
+.format-csv     { background: rgba(245, 158, 11, 0.15);  color: #f59e0b; }
+.format-md_table{ background: rgba(99, 102, 241, 0.15);  color: #818cf8; }
+.format-text    { background: rgba(139, 139, 168, 0.15); color: #8b8ba8; }
+.format-markdown{ background: rgba(99, 102, 241, 0.15);  color: #818cf8; }
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12.5px;
+}
+
+th {
+  background: rgba(99,102,241,0.14);
+  color: #c4b5fd;
+  font-weight: 600;
+  padding: 8px 12px;
+  border: 1px solid rgba(99,102,241,0.2);
+  text-align: left;
+  font-size: 11.5px;
+  letter-spacing: 0.03em;
+}
+
+td {
+  padding: 7px 12px;
+  border: 1px solid var(--border);
+  color: var(--text);
+  vertical-align: top;
+  line-height: 1.5;
+}
+
+tr:nth-child(even) td { background: rgba(255,255,255,0.025); }
+tr:hover td { background: rgba(99,102,241,0.06); }
+
+/* ── Empty state ── */
+.viewer-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: var(--text3);
+  gap: 10px;
+}
+
+.viewer-empty-icon { font-size: 40px; }
+.viewer-empty-text { font-size: 13px; }
+
+/* ══ FORMAT MODAL (created dynamically in viewer.js) ══ */
+/* Styles are inlined in JS for self-containment, but these
+   provide fallback overrides if needed. */
+#fmt-modal-backdrop button {
+  font-family: 'Inter', system-ui, sans-serif;
+}

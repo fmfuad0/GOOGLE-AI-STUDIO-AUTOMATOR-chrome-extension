@@ -1,0 +1,61 @@
+{
+  "name": "AI Studio Automator",
+  "version": "1.0.0",
+  "manifest_version": 3,
+  "description": "Automate bulk spreadsheet processing using Google AI Studio. Upload Excel/CSV, extract & transform data with AI, download results.",
+  "permissions": [
+    "storage",
+    "sidePanel",
+    "scripting",
+    "tabs",
+    "downloads",
+    "unlimitedStorage",
+    "windows"
+  ],
+  "host_permissions": [
+    "https://aistudio.google.com/*"
+  ],
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "action": {
+    "default_popup": "popup/index.html",
+    "default_icon": {
+      "16": "assets/icons/icon16.png",
+      "48": "assets/icons/icon48.png",
+      "128": "assets/icons/icon128.png"
+    }
+  },
+  "side_panel": {
+    "default_path": "popup/index.html"
+  },
+  "icons": {
+    "16": "assets/icons/icon16.png",
+    "48": "assets/icons/icon48.png",
+    "128": "assets/icons/icon128.png"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://aistudio.google.com/*"],
+      "js": ["content.js"],
+      "css": ["content.css"],
+      "run_at": "document_idle"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "assets/ding.mp3",
+        "assets/alert.mp3",
+        "assets/icons/icon16.png",
+        "assets/icons/icon48.png",
+        "assets/icons/icon128.png"
+      ],
+      "matches": [
+        "https://aistudio.google.com/*",
+        "chrome-extension://*/*"
+      ]
+    }
+  ]
+}

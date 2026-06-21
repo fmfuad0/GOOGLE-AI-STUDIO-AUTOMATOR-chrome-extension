@@ -1,0 +1,5 @@
+/* content.css — AI Studio OCR Automator
+   Minimal stylesheet injected alongside content.js.
+   Widget styles are managed via JavaScript-injected <style> in content.js.
+   This file exists to satisfy the manifest content_scripts.css requirement.
+*/
